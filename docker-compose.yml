@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./mygpt-backend
+      dockerfile: Dockerfile.dev  # Use Dockerfile for prod
+    container_name: mygpt-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./mygpt-backend:/app
+    env_file:
+      - ./mygpt-backend/.env
+
+  frontend:
+    build:
+      context: ./mygpt-frontend
+      dockerfile: Dockerfile.dev  # Use Dockerfile for prod
+    container_name: mygpt-frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./mygpt-frontend:/app
+    env_file:
+      - ./mygpt-frontend/.env
+    depends_on:
+      - backend

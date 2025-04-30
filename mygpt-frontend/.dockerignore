@@ -1,0 +1,21 @@
+# Ignore local dev stuff
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ignore git stuff
+.git/
+.gitignore
+
+# Ignore macOS and OS junk
+.DS_Store
+
+# Ignore editor config
+.vscode/
+.idea/
+
+# Optional: ignore env vars if using dotenv
+.env

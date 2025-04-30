@@ -1,0 +1,37 @@
+# General
+__pycache__/
+**/__pycache__/
+*.py[cod]
+**/*.py[cod]
+*.log
+**/*.log
+**/*.sqlite3
+**/*.db
+.DS_Store
+**/.DS_Store
+.env
+**/.env
+*.env
+**/*.env
+
+# Virtual envs
+env/
+**/env/
+venv/
+**/venv/
+.venv/
+**/.venv/
+
+# IDEs
+.vscode/
+**/.vscode/
+.idea/
+**/.idea/
+
+# Docker
+**/.env
+**/.env.*
+
+# BUT allow templates
+!**/*.env.template
+
