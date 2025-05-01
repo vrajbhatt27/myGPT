@@ -32,7 +32,7 @@ jobs:
         run: 'echo "TODO: Add backend tests"'
 
   frontend-ci:
-    name: Lint & Check Frontend
+    name: Run Frontend Tests
     runs-on: ubuntu-latest
 
     steps:
