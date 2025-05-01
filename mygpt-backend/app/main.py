@@ -1,11 +1,9 @@
 # app/main.py
-
-from fastapi import FastAPI
-from fastapi import HTTPException
-
 from app.models.request_models import AskRequest
 from app.models.response_models import AskResponse
 from app.services.chat_service import ChatService
+from fastapi import FastAPI
+from fastapi import HTTPException
 
 app = FastAPI()
 
