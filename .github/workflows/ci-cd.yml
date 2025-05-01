@@ -23,11 +23,10 @@ jobs:
         run: |
           pip install -r mygpt-backend/requirements.txt
 
-      - name: Lint backend code
+      - name: Lint backend code with Ruff
         run: |
-          pip install flake8
           cd mygpt-backend
-          flake8 app
+          ruff check app/
 
       - name: Run backend tests (skipped for now)
         run: 'echo "TODO: Add backend tests"'

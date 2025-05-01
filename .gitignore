@@ -1,6 +1,8 @@
 # General
 __pycache__/
 **/__pycache__/
+*.ruff_cache
+**/*.ruff_cache
 *.py[cod]
 **/*.py[cod]
 *.log
