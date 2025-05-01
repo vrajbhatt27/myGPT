@@ -59,6 +59,7 @@ jobs:
   docker-build:
     name: Build Docker Images
     runs-on: ubuntu-latest
+    needs: [backend-ci, frontend-ci] # Ensure this job runs after the CI jobs
 
     steps:
       - name: Checkout code
@@ -66,8 +67,8 @@ jobs:
 
       - name: Build backend image
         run: |
-          docker build -t mygpt-backend:${{ github.sha }} -f mygpt-backend/Dockerfile .
+          docker build -t mygpt-backend:${{ github.sha }} -f mygpt-backend/Dockerfile mygpt-backend/
 
       - name: Build frontend image
         run: |
-          docker build -t mygpt-frontend:${{ github.sha }} -f mygpt-frontend/Dockerfile .
+          docker build -t mygpt-frontend:${{ github.sha }} -f mygpt-frontend/Dockerfile mygpt-frontend/
