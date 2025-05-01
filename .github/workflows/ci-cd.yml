@@ -7,7 +7,7 @@ on:
 
 jobs:
   backend-ci:
-    name: Run backend tests
+    name: Run Backend Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -52,3 +52,22 @@ jobs:
         run: |
           cd mygpt-frontend
           ruff check .
+
+      - name: Run frontend tests
+        run: 'echo "TODO: Add frontend tests"'
+
+  docker-build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build backend image
+        run: |
+          docker build -t mygpt-backend:${{ github.sha }} -f mygpt-backend/Dockerfile .
+
+      - name: Build frontend image
+        run: |
+          docker build -t mygpt-frontend:${{ github.sha }} -f mygpt-frontend/Dockerfile .
