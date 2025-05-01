@@ -30,3 +30,25 @@ jobs:
 
       - name: Run backend tests (skipped for now)
         run: 'echo "TODO: Add backend tests"'
+
+  frontend-ci:
+    name: Lint & Check Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install frontend requirements
+        run: |
+          pip install -r mygpt-frontend/requirements.txt
+
+      - name: Lint frontend with ruff
+        run: |
+          cd mygpt-frontend
+          ruff check .
