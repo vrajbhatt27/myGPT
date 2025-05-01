@@ -11,29 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 👇 Step 1: Checkout repo code into the runner
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 👇 Step 2: Set up Python for backend
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      # 👇 Step 3: Install backend dependencies
       - name: Install backend requirements
         run: |
-          cd backend
-          pip install -r requirements.txt
+          pip install -r mygpt-backend/requirements.txt
 
-      # 👇 Step 4: Run basic linting (pep8-style formatting)
       - name: Lint backend code
         run: |
           pip install flake8
-          cd backend
+          cd mygpt-backend
           flake8 app
 
-      # 👇 Step 5: Run (optional) backend tests (we’ll add tests later)
       - name: Run backend tests (skipped for now)
         run: 'echo "TODO: Add backend tests"'
