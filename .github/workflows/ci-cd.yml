@@ -1,9 +1,16 @@
 name: CI/CD Pipeline
 
-# 👇 Trigger this workflow on pushes to main or dev branches
 on:
   push:
     branches: [main, dev]
+
+env:
+  PYTHON_VERSION: "3.10"
+  BACKEND_DIR: "mygpt-backend"
+  FRONTEND_DIR: "mygpt-frontend"
+  IMAGE_TAG: ${{ github.sha }}
+  REGISTRY: ghcr.io
+  OWNER: ${{ github.repository_owner }}
 
 jobs:
   backend-ci:
@@ -17,16 +24,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install backend requirements
         run: |
-          pip install -r mygpt-backend/requirements.txt
+          pip install -r ${{ env.BACKEND_DIR }}/requirements.txt
 
       - name: Lint backend code with Ruff
         run: |
-          cd mygpt-backend
-          ruff check app/
+          cd ${{ env.BACKEND_DIR }}
+          ruff check .
 
       - name: Run backend tests (skipped for now)
         run: 'echo "TODO: Add backend tests"'
@@ -42,33 +49,53 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install frontend requirements
         run: |
-          pip install -r mygpt-frontend/requirements.txt
+          pip install -r ${{ env.FRONTEND_DIR }}/requirements.txt
 
       - name: Lint frontend with ruff
         run: |
-          cd mygpt-frontend
+          cd ${{ env.FRONTEND_DIR }}
           ruff check .
 
-      - name: Run frontend tests
+      - name: Run frontend tests (skipped for now)
         run: 'echo "TODO: Add frontend tests"'
 
   docker-build:
-    name: Build Docker Images
+    name: Build & Push Docker Images
     runs-on: ubuntu-latest
-    needs: [backend-ci, frontend-ci] # Ensure this job runs after the CI jobs
+    needs: [backend-ci, frontend-ci]
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build backend image
-        run: |
-          docker build -t mygpt-backend:${{ github.sha }} -f mygpt-backend/Dockerfile mygpt-backend/
+      - name: Log in to GitHub Container Registry (GHCR)
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-      - name: Build frontend image
+      - name: Build and tag backend image
         run: |
-          docker build -t mygpt-frontend:${{ github.sha }} -f mygpt-frontend/Dockerfile mygpt-frontend/
+          docker build --no-cache -t ${{ env.REGISTRY }}/${{ env.OWNER }}/mygpt-backend:${{ env.IMAGE_TAG }} -f ${{ env.BACKEND_DIR }}/Dockerfile ${{ env.BACKEND_DIR }}
+
+      - name: Build and tag frontend image
+        run: |
+          docker build --no-cache -t ${{ env.REGISTRY }}/${{ env.OWNER }}/mygpt-frontend:${{ env.IMAGE_TAG }} -f ${{ env.FRONTEND_DIR }}/Dockerfile ${{ env.FRONTEND_DIR }}
+
+      - name: Push backend image to GHCR
+        run: docker push ${{ env.REGISTRY }}/${{ env.OWNER }}/mygpt-backend:${{ env.IMAGE_TAG }}
+
+      - name: Push frontend image to GHCR
+        run: docker push ${{ env.REGISTRY }}/${{ env.OWNER }}/mygpt-frontend:${{ env.IMAGE_TAG }}
+
+      - name: Docker logout
+        run: docker logout ${{ env.REGISTRY }}
+
+      - name: Cleanup Docker images & cache
+        run: |
+          docker image prune -f
