@@ -38,7 +38,7 @@ jobs:
           ruff check .
 
       - name: Run backend tests (skipped for now)
-        run: echo "TODO: Add backend tests"
+        run: 'echo "TODO: Add backend tests"'
 
   frontend-ci:
     name: Run Frontend Tests
@@ -63,7 +63,7 @@ jobs:
           ruff check .
 
       - name: Run frontend tests (skipped for now)
-        run: echo "TODO: Add frontend tests"
+        run: 'echo "TODO: Add frontend tests"'
 
   docker-build:
     name: Build & Push Docker Images to AWS ECR
