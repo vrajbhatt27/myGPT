@@ -1,6 +1,8 @@
 # General
 __pycache__/
 **/__pycache__/
+*.ruff_cache
+**/*.ruff_cache
 *.py[cod]
 **/*.py[cod]
 *.log
@@ -13,6 +15,7 @@ __pycache__/
 **/.env
 *.env
 **/*.env
+temp.ci-cd.yml
 
 # Virtual envs
 env/

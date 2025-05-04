@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, dev]
+
+env:
+  PYTHON_VERSION: "3.10"
+  BACKEND_DIR: "mygpt-backend"
+  FRONTEND_DIR: "mygpt-frontend"
+
+jobs:
+  backend-ci:
+    name: Run Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install backend requirements
+        run: |
+          pip install -r ${{ env.BACKEND_DIR }}/requirements.txt
+
+      - name: Lint backend code with Ruff
+        run: |
+          cd ${{ env.BACKEND_DIR }}
+          ruff check .
+
+      - name: Run backend tests (skipped for now)
+        run: 'echo "TODO: Add backend tests"'
+
+  frontend-ci:
+    name: Run Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install frontend requirements
+        run: |
+          pip install -r ${{ env.FRONTEND_DIR }}/requirements.txt
+
+      - name: Lint frontend with ruff
+        run: |
+          cd ${{ env.FRONTEND_DIR }}
+          ruff check .
+
+      - name: Run frontend tests (skipped for now)
+        run: 'echo "TODO: Add frontend tests"'
