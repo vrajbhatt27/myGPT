@@ -52,3 +52,30 @@ def extract_text_from_csv(file: BytesIO) -> str:
 
     except Exception as e:
         raise RuntimeError(f"Error while reading CSV file: {str(e)}")
+
+
+# mygpt-backend/app/services/rag/loaders.py
+
+
+def extract_text_from_file(file: BytesIO, file_type: str) -> str:
+    """
+    Dispatcher to extract text from either PDF or CSV file.
+
+    Args:
+        file (BytesIO): The uploaded file in memory.
+        file_type (str): Type of file, either 'pdf' or 'csv'.
+
+    Returns:
+        str: Extracted text content.
+    """
+    # Reset the file pointer (very important after first read)
+    file.seek(0)
+
+    if file_type == "pdf":
+        return extract_text_from_pdf(file)
+
+    elif file_type == "csv":
+        return extract_text_from_csv(file)
+
+    else:
+        raise ValueError(f"Unsupported file type: {file_type}")
