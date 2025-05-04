@@ -3,6 +3,7 @@
 from io import BytesIO
 
 import fitz  # PyMuPDF
+import pandas as pd
 
 
 def extract_text_from_pdf(file: BytesIO) -> str:
@@ -28,3 +29,26 @@ def extract_text_from_pdf(file: BytesIO) -> str:
         raise RuntimeError(f"Error while extracting PDF text: {str(e)}")
 
     return text.strip()
+
+
+def extract_text_from_csv(file: BytesIO) -> str:
+    """
+    Reads a CSV file from memory and returns its content as readable plain text.
+
+    Args:
+        file (BytesIO): The uploaded CSV file in memory.
+
+    Returns:
+        str: Stringified CSV content.
+    """
+    try:
+        # Read CSV using pandas
+        df = pd.read_csv(file)
+
+        # Convert the DataFrame to plain text
+        # - index=False → don’t show row numbers
+        # - header=True → keep column names
+        return df.to_string(index=False)
+
+    except Exception as e:
+        raise RuntimeError(f"Error while reading CSV file: {str(e)}")

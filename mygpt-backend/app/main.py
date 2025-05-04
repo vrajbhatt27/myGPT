@@ -49,3 +49,11 @@ async def extract_pdf(file: UploadFile = File(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Extraction failed: {str(e)}")
+
+
+@app.post("/extract/csv")
+async def test_csv(file: UploadFile = File(...)):
+    from app.services.rag.loaders import extract_text_from_csv
+
+    content = extract_text_from_csv(BytesIO(await file.read()))
+    return {"text": content}
