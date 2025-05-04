@@ -15,6 +15,7 @@ __pycache__/
 **/.env
 *.env
 **/*.env
+temp.ci-cd.yml
 
 # Virtual envs
 env/

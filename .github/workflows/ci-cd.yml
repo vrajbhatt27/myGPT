@@ -8,11 +8,6 @@ env:
   PYTHON_VERSION: "3.10"
   BACKEND_DIR: "mygpt-backend"
   FRONTEND_DIR: "mygpt-frontend"
-  IMAGE_TAG: ${{ github.sha }}
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  BACKEND_ECR_REPO: mygpt-backend
-  FRONTEND_ECR_REPO: mygpt-frontend
 
 jobs:
   backend-ci:
@@ -64,45 +59,3 @@ jobs:
 
       - name: Run frontend tests (skipped for now)
         run: 'echo "TODO: Add frontend tests"'
-
-  docker-build:
-    name: Build & Push Docker Images to AWS ECR
-    runs-on: ubuntu-latest
-    needs: [backend-ci, frontend-ci]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Log in to Amazon ECR
-        run: |
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-
-      - name: Build and tag backend image
-        run: |
-          docker build --no-cache -t $BACKEND_ECR_REPO:$IMAGE_TAG -f $BACKEND_DIR/Dockerfile $BACKEND_DIR
-          docker tag $BACKEND_ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_ECR_REPO:$IMAGE_TAG
-
-      - name: Build and tag frontend image
-        run: |
-          docker build --no-cache -t $FRONTEND_ECR_REPO:$IMAGE_TAG -f $FRONTEND_DIR/Dockerfile $FRONTEND_DIR
-          docker tag $FRONTEND_ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_ECR_REPO:$IMAGE_TAG
-
-      - name: Push backend image to ECR
-        run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_ECR_REPO:$IMAGE_TAG
-
-      - name: Push frontend image to ECR
-        run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_ECR_REPO:$IMAGE_TAG
-
-      - name: Docker logout
-        run: docker logout $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-
-      - name: Cleanup Docker images & cache
-        run: docker image prune -f
