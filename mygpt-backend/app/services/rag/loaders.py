@@ -54,9 +54,6 @@ def extract_text_from_csv(file: BytesIO) -> str:
         raise RuntimeError(f"Error while reading CSV file: {str(e)}")
 
 
-# mygpt-backend/app/services/rag/loaders.py
-
-
 def extract_text_from_file(file: BytesIO, file_type: str) -> str:
     """
     Dispatcher to extract text from either PDF or CSV file.
