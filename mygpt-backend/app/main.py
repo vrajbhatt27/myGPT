@@ -6,8 +6,9 @@ from app.models.request_models import AskRequest
 from app.models.response_models import AskResponse
 from app.services.chat_service import ChatService
 from app.services.rag.chunker import split_text_into_chunks
-from app.services.rag.loaders import extract_text_from_csv
-from app.services.rag.loaders import extract_text_from_pdf
+from app.services.rag.embedder import get_openai_embeddings
+from app.services.rag.loaders import extract_text_from_file
+from app.services.rag.pinecone_client import upsert_embeddings
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import HTTPException
@@ -42,32 +43,37 @@ async def ask_question(request: AskRequest):
     return AskResponse(answer=answer)
 
 
-@app.post("/extract/pdf")
-async def extract_pdf(file: UploadFile = File(...)):
-    """
-    Accepts a PDF file upload and returns extracted text.
-    """
-    if file.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+@app.post("/upload")
+async def upload_and_store(file: UploadFile = File(...)):
+    file_bytes = BytesIO(await file.read())
+    file_type = file.content_type.split("/")[-1]  # 'pdf' or 'csv'
+    file_name = file.filename
 
-    try:
-        file_bytes = await file.read()  # read the uploaded file into memory
-        extracted_text = extract_text_from_pdf(BytesIO(file_bytes))  # use our loader
-        chunks = split_text_into_chunks(extracted_text)  # split into chunks
-        logging.debug("-----------------------------------------")
-        logging.debug(f"Extracted {len(chunks)} chunks from the PDF.")
-        for i, chunk in enumerate(chunks):
-            logging.debug(
-                f"Chunk {i + 1} | Length: {len(chunk)} chars\n{chunk}\n{'=' * 60}"
-            )
+    # Step 1: Extract raw text
+    text = extract_text_from_file(file_bytes, file_type)
 
-        return {"text": extracted_text[:5000]}
+    # Step 2: Chunk it
+    chunks = split_text_into_chunks(text, chunk_size=500, chunk_overlap=100)
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Extraction failed: {str(e)}")
+    # Step 3: Embed chunks
+    embeddings = get_openai_embeddings(chunks)
 
+    # Step 4: Build metadata
+    metadata_list = [
+        {
+            "file_name": file_name,
+            "chunk_index": i,
+            "chunk_text": chunk,
+            "source_type": file_type,
+        }
+        for i, chunk in enumerate(chunks)
+    ]
 
-@app.post("/extract/csv")
-async def test_csv(file: UploadFile = File(...)):
-    content = extract_text_from_csv(BytesIO(await file.read()))
-    return {"text": content}
+    # Step 5: Store in Pinecone
+    upsert_embeddings(embeddings, metadata_list, namespace=file_name)
+
+    return {
+        "message": f"{len(chunks)} chunks embedded and stored successfully!",
+        "file": file_name,
+        "namespace": file_name,
+    }

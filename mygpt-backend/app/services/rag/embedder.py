@@ -1,54 +1,38 @@
-# app/services/rag/embedder.py
+# mygpt-backend/app/services/rag/embedder_openai.py
 
 import os
 from typing import List
 
-import httpx
+import openai
 
-CLAUDE_EMBEDDING_URL = "https://api.anthropic.com/v1/embeddings"
-CLAUDE_EMBEDDING_MODEL = "claude-3-sonnet-20240229-embed"
-CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
+# Load OpenAI key from environment
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = OPENAI_API_KEY
 
 
-def get_claude_embeddings(texts: List[str], batch_size: int = 100) -> List[List[float]]:
-    """
-    Fetches embeddings from Claude for a list of text chunks in safe batches.
+def get_openai_embeddings(
+    texts: List[str], model: str = "text-embedding-3-small", batch_size: int = 100
+) -> List[List[float]]:
+    # Remove empty/whitespace chunks
+    cleaned_texts = [text.strip() for text in texts if text.strip()]
 
-    Args:
-        texts (List[str]): Cleaned list of non-empty text chunks.
-        batch_size (int): Number of chunks to send per request (max 100).
+    all_embeddings = []
 
-    Returns:
-        List[List[float]]: List of embedding vectors.
-    """
-    headers = {
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-    }
-
-    # ✅ Clean up blank chunks
-    texts = [text.strip() for text in texts if text.strip()]
-
-    embeddings = []
-
-    for i in range(0, len(texts), batch_size):
-        batch = texts[i : i + batch_size]
-        payload = {"model": CLAUDE_EMBEDDING_MODEL, "input": batch}
+    # 🔁 Break input into batches
+    for i in range(0, len(cleaned_texts), batch_size):
+        batch = cleaned_texts[i : i + batch_size]
 
         try:
-            response = httpx.post(
-                CLAUDE_EMBEDDING_URL, headers=headers, json=payload, timeout=30
-            )
-            response.raise_for_status()
-            data = response.json()
+            # 🚀 Make API call for the current batch
+            response = openai.embeddings.create(input=batch, model=model)
 
-            batch_embeddings = [item["embedding"] for item in data["data"]]
-            embeddings.extend(batch_embeddings)
+            # 🎯 Extract embedding vectors
+            embeddings = [item.embedding for item in response.data]
+            all_embeddings.extend(embeddings)
 
         except Exception as e:
             raise RuntimeError(
-                f"Claude embedding API failed on batch {i // batch_size}: {str(e)}"
+                f"OpenAI embedding failed at batch {i // batch_size}: {str(e)}"
             )
 
-    return embeddings
+    return all_embeddings
