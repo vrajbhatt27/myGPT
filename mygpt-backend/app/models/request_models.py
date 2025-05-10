@@ -1,5 +1,8 @@
 # app/models/request_models.py
 
+# Deprecated for multipart/form-data /ask route
+# Retained here for potential JSON-only use
+
 from pydantic import BaseModel
 from pydantic import Field
 

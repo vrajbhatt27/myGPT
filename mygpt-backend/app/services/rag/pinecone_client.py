@@ -45,3 +45,11 @@ def upsert_embeddings(embeddings, metadata_list, namespace="default"):
     ]
 
     index.upsert(vectors=vectors, namespace=namespace)
+
+
+def namespace_exists(namespace: str) -> bool:
+    """
+    Checks if any vectors exist under the given namespace.
+    """
+    stats = index.describe_index_stats()
+    return namespace in stats.get("namespaces", {})
