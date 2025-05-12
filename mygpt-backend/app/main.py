@@ -15,11 +15,6 @@ from fastapi import Form
 from fastapi import HTTPException
 from fastapi import UploadFile
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
-
 app = FastAPI()
 
 
@@ -31,7 +26,7 @@ async def ping():
 @app.post("/ask", response_model=AskResponse)
 async def ask_question(
     question: str = Form(...),
-    file: UploadFile = File(None),  # Optional
+    file: UploadFile = File(None),
 ):
     question = question.strip()
     if len(question) < 3:
@@ -45,8 +40,10 @@ async def ask_question(
         file_type = file.content_type.split("/")[-1]
         file_name = file.filename
         namespace = file_name  # override namespace
+        print("====5====>", namespace, namespace_exists(namespace))
 
         if not namespace_exists(namespace):
+            print("HERE______")
             # Upload pipeline
             text = extract_text_from_file(file_bytes, file_type)
             chunks = split_text_into_chunks(text, chunk_size=500, chunk_overlap=100)
@@ -64,6 +61,7 @@ async def ask_question(
 
             upsert_embeddings(embeddings, metadata_list, namespace=namespace)
         else:
+            print("IN ELSE-------------")
             logging.info("=" * 20)
             logging.info(f"Namespace {namespace} already exists. Skipping upload.")
             logging.info("=" * 20)
