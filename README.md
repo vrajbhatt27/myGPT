@@ -25,6 +25,8 @@
   - [Phase 6 – Security, Privacy & Compliance](#-phase-6--security-privacy--compliance)
   - [Phase 7 – Chat UX & Session Management](#-phase-7--chat-ux--session-management)
   - [Phase 8 – Production Deployment & Scaling](#-phase-8--production-deployment--scaling)
+- [Author](#-author)
+- [Copyright](#-copyright)
 
 ## 📌 Introduction
 
@@ -213,7 +215,7 @@ The following phases represent the foundation of the MedGPT platform and are ful
 
 ---
 
-## 📩 Author
+## 👨‍💻 Author
 
 Designed and engineered by **Vraj Bhatt** | AI/ML Systems • Full-Stack Development • DevOps  
 📫 Email: vrajbhatt.it@gmail.com  
