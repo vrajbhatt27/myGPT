@@ -217,7 +217,7 @@ The following phases represent the foundation of the MedGPT platform and are ful
 
 Designed and engineered by **Vraj Bhatt** | AI/ML Systems • Full-Stack Development • DevOps  
 📫 Email: vrajbhatt.it@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/vrajbhatt27)
+🔗 LinkedIn: https://www.linkedin.com/in/vrajbhatt27
 
 ---
 
