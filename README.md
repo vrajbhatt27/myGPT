@@ -1,5 +1,15 @@
 # 🧠 MedGPT
 
+# 🧠 MedGPT – AI Assistant for Medical Research
+
+![Build](https://img.shields.io/github/actions/workflow/status/vrajbhatt27/mygpt/.github/workflows/ci-cd.yml?branch=main)
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![Docker](https://img.shields.io/badge/docker-ready-blue?logo=docker)
+![Lint](https://img.shields.io/badge/linting-ruff-blue?logo=python)
+![Last Commit](https://img.shields.io/github/last-commit/vrajbhatt27/mygpt)
+![Issues](https://img.shields.io/github/issues/vrajbhatt27/mygpt)
+![Deployment](https://img.shields.io/badge/deployment-AWS%20ECS-green?logo=amazonaws)
+
 ## 📑 Table of Contents
 
 - [Introduction](#-introduction)
