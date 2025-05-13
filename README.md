@@ -2,20 +2,20 @@
 
 ## 📑 Table of Contents
 
-- [📌 Introduction](#-introduction)
-- [🔧 Project Overview](#-project-overview)
-  - [🧱 Tech Stack](#-tech-stack)
-  - [📐 System Overview](#-system-overview)
-- [📈 Project Status](#-project-status)
-  - [✅ MVP Delivered: Phase 1 + Phase 2](#-mvp-delivered-phase-1--phase-2)
-    - [🔹 Phase 1 – MVP Foundation](#-phase-1--mvp-foundation-backend--frontend--claude-integration)
-    - [🔹 Phase 2 – RAG Pipeline Implementation & Document Uploads](#-phase-2--rag-pipeline-implementation--document-uploads)
-  - [🏗️ Phase 3 – System Refinement & User-Centric RAG](#-phase-3--system-refinement--user-centric-rag-️-in-progress)
-  - [🔐 Phase 4 – Identity, Access & Session Management](#-phase-4--identity-access--session-management)
-  - [🧠 Phase 5 – Knowledge Corpus Integration & Smart Training](#-phase-5--knowledge-corpus-integration--smart-training)
-  - [🔒 Phase 6 – Security, Privacy & Compliance](#-phase-6--security-privacy--compliance)
-  - [💬 Phase 7 – Chat UX & Session Management](#-phase-7--chat-ux--session-management)
-  - [🚀 Phase 8 – Production Deployment & Scaling](#-phase-8--production-deployment--scaling)
+- [Introduction](#-introduction)
+- [Project Overview](#-project-overview)
+  - [Tech Stack](#-tech-stack)
+  - [System Overview](#-system-overview)
+- [Project Status](#-project-status)
+  - [MVP Delivered: Phase 1 + Phase 2](#-mvp-delivered-phase-1--phase-2)
+    - [Phase 1 – MVP Foundation](#-phase-1--mvp-foundation-backend--frontend--claude-integration)
+    - [Phase 2 – RAG Pipeline Implementation & Document Uploads](#-phase-2--rag-pipeline-implementation--document-uploads)
+  - [Phase 3 – System Refinement & User-Centric RAG](#-phase-3--system-refinement--user-centric-rag-️-in-progress)
+  - [Phase 4 – Identity, Access & Session Management](#-phase-4--identity-access--session-management)
+  - [Phase 5 – Knowledge Corpus Integration & Smart Training](#-phase-5--knowledge-corpus-integration--smart-training)
+  - [Phase 6 – Security, Privacy & Compliance](#-phase-6--security-privacy--compliance)
+  - [Phase 7 – Chat UX & Session Management](#-phase-7--chat-ux--session-management)
+  - [Phase 8 – Production Deployment & Scaling](#-phase-8--production-deployment--scaling)
 
 ## 📌 Introduction
 
