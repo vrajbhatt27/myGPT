@@ -210,3 +210,18 @@ The following phases represent the foundation of the MedGPT platform and are ful
 - Use GitHub Actions to test/lint/build/deploy backend + frontend.
 - Deploy on AWS ECS with logging and health monitoring.
 - Set up observability (Prometheus/Sentry) and add optional autoscaling.
+
+---
+
+## 📩 Contact
+
+Built with ❤️ by [Your Name]  
+📫 Email: your.email@example.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/yourprofile) &nbsp;&nbsp;&nbsp; 🌐 [Portfolio](https://yourportfolio.com)
+
+---
+
+## © Copyright
+
+© 2025 Vraj Bhatt. All rights reserved.  
+This project is intended for portfolio and educational purposes only. Commercial use is prohibited without permission.
