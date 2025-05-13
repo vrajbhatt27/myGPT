@@ -8,7 +8,6 @@
 ![Lint](https://img.shields.io/badge/linting-ruff-blue?logo=python)
 ![Last Commit](https://img.shields.io/github/last-commit/vrajbhatt27/mygpt)
 ![Issues](https://img.shields.io/github/issues/vrajbhatt27/mygpt)
-![Deployment](https://img.shields.io/badge/deployment-AWS%20ECS-green?logo=amazonaws)
 
 ## 📑 Table of Contents
 
